@@ -1,4 +1,3 @@
-import { AppShell, Container } from '@mantine/core';
 import type { ReactNode } from 'react';
 import Navigation from './Navigation';
 
@@ -8,14 +7,14 @@ interface LayoutProps {
 
 function Layout({ children }: LayoutProps) {
   return (
-    <AppShell header={{ height: 60 }} padding="md">
-      <AppShell.Header>
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white shadow-sm border-b border-gray-200">
         <Navigation />
-      </AppShell.Header>
-      <AppShell.Main>
-        <Container size="md">{children}</Container>
-      </AppShell.Main>
-    </AppShell>
+      </header>
+      <main className="p-4">
+        <div className="max-w-2xl mx-auto">{children}</div>
+      </main>
+    </div>
   );
 }
 

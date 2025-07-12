@@ -132,33 +132,35 @@ afterEach(() => {
 });
 
 // Global test utilities
-global.testUtils = {
-  // Helper to simulate localStorage data
-  setLocalStorageData: (key: string, value: unknown) => {
-    localStorageMock.setItem(key, JSON.stringify(value));
-  },
+Object.assign(globalThis, {
+  testUtils: {
+    // Helper to simulate localStorage data
+    setLocalStorageData: (key: string, value: unknown) => {
+      localStorageMock.setItem(key, JSON.stringify(value));
+    },
 
-  // Helper to get localStorage data
-  getLocalStorageData: (key: string) => {
-    const value = localStorageMock.getItem(key);
-    return value ? JSON.parse(value) : null;
-  },
+    // Helper to get localStorage data
+    getLocalStorageData: (key: string) => {
+      const value = localStorageMock.getItem(key);
+      return value ? JSON.parse(value) : null;
+    },
 
-  // Helper to simulate different screen sizes
-  setScreenSize: (width, height = 768) => {
-    Object.defineProperty(window, 'innerWidth', {
-      writable: true,
-      configurable: true,
-      value: width,
-    });
-    Object.defineProperty(window, 'innerHeight', {
-      writable: true,
-      configurable: true,
-      value: height,
-    });
-    window.dispatchEvent(new Event('resize'));
+    // Helper to simulate different screen sizes
+    setScreenSize: (width: number, height = 768) => {
+      Object.defineProperty(window, 'innerWidth', {
+        writable: true,
+        configurable: true,
+        value: width,
+      });
+      Object.defineProperty(window, 'innerHeight', {
+        writable: true,
+        configurable: true,
+        value: height,
+      });
+      window.dispatchEvent(new Event('resize'));
+    },
   },
-};
+});
 
 // Types for global test utilities
 declare global {

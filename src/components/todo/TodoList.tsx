@@ -1,4 +1,3 @@
-import { Group, Select, Stack, Text, TextInput } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
 import { useState } from 'react';
 import type { Todo, TodoFilter } from '../../types/todo';
@@ -33,50 +32,53 @@ function TodoList({ todos, updateTodo, deleteTodo }: TodoListProps) {
   });
 
   return (
-    <Stack gap="md">
-      <Group>
-        <TextInput
-          placeholder="Search todos..."
-          leftSection={<IconSearch size={16} />}
-          value={filter.searchQuery}
-          onChange={(event) => setFilter({ ...filter, searchQuery: event.currentTarget.value })}
-          style={{ flex: 1 }}
-        />
-        <Select
-          placeholder="Filter by status"
-          data={[
-            { value: 'all', label: 'All' },
-            { value: 'pending', label: 'Pending' },
-            { value: 'completed', label: 'Completed' },
-          ]}
+    <div className="space-y-4">
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="relative flex-1">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <IconSearch className="h-5 w-5 text-gray-400" />
+          </div>
+          <input
+            type="text"
+            placeholder="Search todos..."
+            value={filter.searchQuery}
+            onChange={(e) => setFilter({ ...filter, searchQuery: e.target.value })}
+            className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+        <select
           value={filter.status}
-          onChange={(value) => setFilter({ ...filter, status: value as TodoFilter['status'] })}
-        />
-        <Select
-          placeholder="Filter by priority"
-          data={[
-            { value: '', label: 'All priorities' },
-            { value: 'low', label: 'Low' },
-            { value: 'medium', label: 'Medium' },
-            { value: 'high', label: 'High' },
-          ]}
+          onChange={(e) => setFilter({ ...filter, status: e.target.value as TodoFilter['status'] })}
+          className="block px-3 py-2 border border-gray-300 rounded-md leading-5 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+        >
+          <option value="all">All</option>
+          <option value="pending">Pending</option>
+          <option value="completed">Completed</option>
+        </select>
+        <select
           value={filter.priority || ''}
-          onChange={(value) => setFilter({ ...filter, priority: value as TodoFilter['priority'] })}
-        />
-      </Group>
+          onChange={(e) =>
+            setFilter({ ...filter, priority: e.target.value as TodoFilter['priority'] })
+          }
+          className="block px-3 py-2 border border-gray-300 rounded-md leading-5 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+        >
+          <option value="">All priorities</option>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
 
       {filteredTodos.length === 0 ? (
-        <Text ta="center" c="dimmed" py="xl">
-          No todos found
-        </Text>
+        <div className="text-center py-12 text-gray-500">No todos found</div>
       ) : (
-        <Stack gap="sm">
+        <div className="space-y-3">
           {filteredTodos.map((todo) => (
             <TodoItem key={todo.id} todo={todo} onUpdate={updateTodo} onDelete={deleteTodo} />
           ))}
-        </Stack>
+        </div>
       )}
-    </Stack>
+    </div>
   );
 }
 
