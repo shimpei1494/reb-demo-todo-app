@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout';
+import { TodoProvider } from './context/TodoContext';
 import SettingsPage from './pages/SettingsPage';
 import StatsPage from './pages/StatsPage';
 import TodoPage from './pages/TodoPage';
-import { TodoProvider } from './context/TodoContext';
 
 function App() {
   return (

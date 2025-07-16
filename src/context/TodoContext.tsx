@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode } from 'react';
+import { createContext, type ReactNode, useContext } from 'react';
 import { useTodos } from '../hooks/useTodos';
 import type { Todo, TodoStats } from '../types/todo';
 
@@ -27,11 +27,7 @@ interface TodoProviderProps {
 export function TodoProvider({ children }: TodoProviderProps) {
   const todoActions = useTodos();
 
-  return (
-    <TodoContext.Provider value={todoActions}>
-      {children}
-    </TodoContext.Provider>
-  );
+  return <TodoContext.Provider value={todoActions}>{children}</TodoContext.Provider>;
 }
 
 export function useTodoContext() {

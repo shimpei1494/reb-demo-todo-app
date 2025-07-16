@@ -1,5 +1,3 @@
-import { Button, Card, Group, Select, Stack, Switch, Text, Title } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
 import { useState } from 'react';
 import { useTodoContext } from '../context/TodoContext';
 
@@ -10,20 +8,14 @@ function SettingsPage() {
 
   const handleClearCompleted = () => {
     clearCompleted();
-    notifications.show({
-      title: 'Success',
-      message: 'Completed tasks have been cleared',
-      color: 'green',
-    });
+    alert('Completed tasks have been cleared');
   };
 
   const handleClearAll = () => {
-    clearAll();
-    notifications.show({
-      title: 'Success',
-      message: 'All tasks have been cleared',
-      color: 'green',
-    });
+    if (confirm('Are you sure you want to clear all tasks? This cannot be undone.')) {
+      clearAll();
+      alert('All tasks have been cleared');
+    }
   };
 
   const handleExportData = () => {
@@ -36,103 +28,101 @@ function SettingsPage() {
       a.download = 'todos-backup.json';
       a.click();
       URL.revokeObjectURL(url);
-      notifications.show({
-        title: 'Success',
-        message: 'Data exported successfully',
-        color: 'green',
-      });
+      alert('Data exported successfully');
     } else {
-      notifications.show({
-        title: 'Info',
-        message: 'No data to export',
-        color: 'blue',
-      });
+      alert('No data to export');
     }
   };
 
   return (
-    <Stack gap="lg">
-      <Title order={2}>Settings</Title>
+    <div className="space-y-6">
+      <h2 className="text-2xl font-bold text-gray-900">Settings</h2>
 
-      <Card withBorder padding="md">
-        <Title order={3} mb="md">
-          Appearance
-        </Title>
-        <Stack gap="md">
-          <Group justify="space-between">
-            <Text>Dark Mode</Text>
-            <Switch
-              checked={darkMode}
-              onChange={(event) => setDarkMode(event.currentTarget.checked)}
-            />
-          </Group>
-          <Group justify="space-between">
-            <Text>Language</Text>
-            <Select
+      <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Appearance</h3>
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <span className="text-sm font-medium text-gray-700">Dark Mode</span>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={darkMode}
+                onChange={(e) => setDarkMode(e.target.checked)}
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-sm font-medium text-gray-700">Language</span>
+            <select
               value={language}
-              onChange={(value) => setLanguage(value || 'ja')}
-              data={[
-                { value: 'ja', label: 'Japanese' },
-                { value: 'en', label: 'English' },
-              ]}
-              w={150}
-            />
-          </Group>
-        </Stack>
-      </Card>
+              onChange={(e) => setLanguage(e.target.value)}
+              className="block px-3 py-2 border border-gray-300 rounded-md leading-5 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="ja">Japanese</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+        </div>
+      </div>
 
-      <Card withBorder padding="md">
-        <Title order={3} mb="md">
-          Data Management
-        </Title>
-        <Stack gap="md">
-          <Group justify="space-between">
+      <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Data Management</h3>
+        <div className="space-y-4">
+          <div className="flex justify-between items-start">
             <div>
-              <Text>Clear Completed Tasks</Text>
-              <Text size="sm" c="dimmed">
-                Remove all completed tasks from your list
-              </Text>
+              <div className="text-sm font-medium text-gray-700">Clear Completed Tasks</div>
+              <div className="text-sm text-gray-500">Remove all completed tasks from your list</div>
             </div>
-            <Button variant="outline" color="orange" onClick={handleClearCompleted}>
+            <button
+              type="button"
+              onClick={handleClearCompleted}
+              className="px-4 py-2 text-sm font-medium text-orange-700 bg-white border border-orange-300 rounded-md hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+            >
               Clear Completed
-            </Button>
-          </Group>
+            </button>
+          </div>
 
-          <Group justify="space-between">
+          <div className="flex justify-between items-start">
             <div>
-              <Text>Clear All Tasks</Text>
-              <Text size="sm" c="dimmed">
+              <div className="text-sm font-medium text-gray-700">Clear All Tasks</div>
+              <div className="text-sm text-gray-500">
                 Remove all tasks from your list (cannot be undone)
-              </Text>
+              </div>
             </div>
-            <Button variant="outline" color="red" onClick={handleClearAll}>
+            <button
+              type="button"
+              onClick={handleClearAll}
+              className="px-4 py-2 text-sm font-medium text-red-700 bg-white border border-red-300 rounded-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            >
               Clear All
-            </Button>
-          </Group>
+            </button>
+          </div>
 
-          <Group justify="space-between">
+          <div className="flex justify-between items-start">
             <div>
-              <Text>Export Data</Text>
-              <Text size="sm" c="dimmed">
-                Download a backup of your tasks
-              </Text>
+              <div className="text-sm font-medium text-gray-700">Export Data</div>
+              <div className="text-sm text-gray-500">Download a backup of your tasks</div>
             </div>
-            <Button variant="outline" onClick={handleExportData}>
+            <button
+              type="button"
+              onClick={handleExportData}
+              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
               Export
-            </Button>
-          </Group>
-        </Stack>
-      </Card>
+            </button>
+          </div>
+        </div>
+      </div>
 
-      <Card withBorder padding="md">
-        <Title order={3} mb="md">
-          About
-        </Title>
-        <Text size="sm" c="dimmed">
-          TODO App v1.0.0 - Built with React, TypeScript, and Mantine
-        </Text>
-      </Card>
-    </Stack>
+      <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">About</h3>
+        <div className="text-sm text-gray-500">
+          TODO App v1.0.0 - Built with React, TypeScript, and Tailwind CSS
+        </div>
+      </div>
+    </div>
   );
 }
 
